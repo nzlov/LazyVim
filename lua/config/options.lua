@@ -3,9 +3,12 @@
 -- Add any additional options here
 local o = vim.o
 o.cursorlineopt = "both" -- to enable cursorline!
-
 o.relativenumber = true
 o.termguicolors = true
+o.background = "light"
+
+local g = vim.g
+g.transparency = true
 
 if string.find(vim.loop.os_uname().release, "microsoft") then
   -- require("custom.configs.wslclipboard").setup()
