@@ -13,7 +13,7 @@ g.transparency = true
 
 if string.find(vim.loop.os_uname().release, "microsoft") then
   -- require("custom.configs.wslclipboard").setup()
-  vim.g.clipboard = {
+  g.clipboard = {
     name = "WslClipboard",
     copy = {
       ["+"] = "clip.exe",
