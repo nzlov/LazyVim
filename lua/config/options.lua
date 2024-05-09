@@ -6,6 +6,7 @@ o.cursorlineopt = "both" -- to enable cursorline!
 o.relativenumber = true
 o.termguicolors = true
 o.background = "light"
+o.wrap = true -- Disable line wrap
 
 local g = vim.g
 g.transparency = true
