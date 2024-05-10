@@ -9,8 +9,7 @@
     "lazyvim.plugins.extras.lang.java",
     "lazyvim.plugins.extras.lang.markdown",
     "lazyvim.plugins.extras.lang.yaml",
-    "lazyvim.plugins.extras.ui.edgy",
-    "lazyvim.plugins.extras.ui.mini-animate"
+    "lazyvim.plugins.extras.ui.edgy"
   ],
   "news": {
     "NEWS.md": "3314"

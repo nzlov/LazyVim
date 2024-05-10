@@ -2,9 +2,6 @@
 -- Default options that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/options.lua
 -- Add any additional options here
 local o = vim.o
-o.cursorlineopt = "both" -- to enable cursorline!
-o.relativenumber = true
-o.termguicolors = true
 o.background = "light"
 o.wrap = true -- Disable line wrap
 
