@@ -1,3 +1,6 @@
+vim.opt.shiftwidth = 4
+vim.opt.tabstop = 4
+
 return {
   {
     "mfussenegger/nvim-jdtls",

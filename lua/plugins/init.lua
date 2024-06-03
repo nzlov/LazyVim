@@ -9,7 +9,12 @@ return {
       colorscheme = "gruvbox",
     },
   },
-
+  {
+    "nvim-lspconfig",
+    opts = {
+      inlay_hints = { enabled = false },
+    },
+  },
   {
     "f-person/auto-dark-mode.nvim",
     lazy = false,

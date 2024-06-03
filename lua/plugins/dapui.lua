@@ -1,5 +1,7 @@
 local _float_console = function()
   require("dapui").float_element("console", {
+    enter = true,
+    title = "console",
     position = "center",
     height = math.floor(vim.o.lines * 0.9),
     width = math.floor(vim.o.columns * 0.8),
