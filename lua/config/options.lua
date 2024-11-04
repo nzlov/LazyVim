@@ -4,6 +4,8 @@
 local o = vim.o
 o.background = "light"
 o.wrap = true -- Disable line wrap
+o.shiftwidth = 2
+o.tabstop = 2
 
 local g = vim.g
 g.transparency = true
