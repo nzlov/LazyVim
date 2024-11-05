@@ -10,10 +10,6 @@ o.tabstop = 2
 local g = vim.g
 g.transparency = true
 
-local function augroup(name)
-  return vim.api.nvim_create_augroup("lazyvim_" .. name, { clear = true })
-end
-
 if string.find(vim.loop.os_uname().release, "microsoft") then
   g.clipboard = {
     name = "WslClipboard",
@@ -44,13 +40,3 @@ if string.find(vim.loop.os_uname().release, "microsoft") then
   --   cache_enabled = true,
   -- }
 end
-
--- wrap and check for spell in text filetypes
-vim.api.nvim_create_autocmd("FileType", {
-  group = augroup("nzjava"),
-  pattern = { "java" },
-  callback = function()
-    vim.opt.shiftwidth = 4
-    vim.opt.tabstop = 4
-  end,
-})
