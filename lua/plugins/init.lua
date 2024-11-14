@@ -78,7 +78,6 @@ return {
   {
     "javiorfo/nvim-wildcat",
     lazy = true,
-    ft = "java",
     cmd = { "WildcatRun", "WildcatUp", "WildcatInfo" },
     dependencies = { "javiorfo/nvim-popcorn" },
     opts = {
