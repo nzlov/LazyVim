@@ -117,6 +117,20 @@ return {
     end,
   },
   {
+    "Saghen/blink.cmp",
+    optional = true,
+    opts = function(_, opts)
+      opts.keymap = {
+        preset = "enter",
+        ["<C-o>"] = { "show" },
+        ["<Tab>"] = {
+          LazyVim.cmp.map({ "snippet_forward", "ai_accept" }),
+          "fallback",
+        },
+      }
+    end,
+  },
+  {
     "hrsh7th/nvim-cmp",
     optional = true,
     opts = function(_, opts)
