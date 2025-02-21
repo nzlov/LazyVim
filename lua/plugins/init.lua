@@ -130,4 +130,58 @@ return {
       }
     end,
   },
+  {
+    "TabbyML/vim-tabby",
+    lazy = false,
+    dependencies = {
+      "neovim/nvim-lspconfig",
+    },
+    init = function()
+      vim.g.tabby_agent_start_command = { "npx", "tabby-agent", "--stdio" }
+      vim.g.tabby_inline_completion_trigger = "auto"
+    end,
+  },
+  {
+    "xiyaowong/transparent.nvim",
+    config = function(_, opts)
+      -- Optional, you don't have to run setup.
+      require("transparent").setup({
+        -- table: default groups
+        groups = {
+          "Normal",
+          "NormalNC",
+          "Comment",
+          "Constant",
+          "Special",
+          "Identifier",
+          "Statement",
+          "PreProc",
+          "Type",
+          "Underlined",
+          "Todo",
+          "String",
+          "Function",
+          "Conditional",
+          "Repeat",
+          "Operator",
+          "Structure",
+          "LineNr",
+          "NonText",
+          "SignColumn",
+          "CursorLine",
+          "CursorLineNr",
+          "StatusLine",
+          "StatusLineNC",
+          "EndOfBuffer",
+        },
+        -- table: additional groups that should be cleared
+        extra_groups = {},
+        -- table: groups you don't want to clear
+        exclude_groups = {},
+        -- function: code to be executed after highlight groups are cleared
+        -- Also the user event "TransparentClear" will be triggered
+        on_clear = function() end,
+      })
+    end,
+  },
 }
