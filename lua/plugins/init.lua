@@ -19,40 +19,21 @@ return {
     },
   },
   {
-    "nvim-lspconfig",
-    opts = {
-      inlay_hints = { enabled = false },
-    },
-  },
-  {
-    "f-person/auto-dark-mode.nvim",
-    lazy = false,
-    config = function()
-      local replace_word = function(old, new)
-        local chadrc = vim.fn.stdpath("config") .. "/lua/config/options.lua"
-        local file = io.open(chadrc, "r")
-        local added_pattern = string.gsub(old, "-", "%%-") -- add % before - if exists
-        local new_content = file:read("*all"):gsub(added_pattern, new)
-
-        file = io.open(chadrc, "w")
-        file:write(new_content)
-        file:close()
-      end
-
-      require("auto-dark-mode").setup({
-        update_interval = 1000,
-        set_dark_mode = function()
-          replace_word('o.background = "light"', 'o.background = "dark"')
-          vim.o.background = "dark"
+    "neovim/nvim-lspconfig",
+    opts = function()
+      local keys = require("lazyvim.plugins.lsp.keymaps").get()
+      keys[#keys + 1] = { "<c-k>", mode = "i", false }
+      keys[#keys + 1] = {
+        "<c-i>",
+        function()
+          return vim.lsp.buf.signature_help()
         end,
-        set_light_mode = function()
-          replace_word('o.background = "dark"', 'o.background = "light"')
-          vim.o.background = "light"
-        end,
-      })
+        mode = "i",
+        desc = "Signature Help",
+        has = "signatureHelp",
+      }
     end,
   },
-
   {
     "mbbill/undotree",
     cmd = { "UndotreeToggle" },
@@ -67,17 +48,17 @@ return {
     },
   },
   { "mg979/vim-visual-multi" },
-  {
-    "iamcco/markdown-preview.nvim",
-    ft = "markdown",
-    lazy = true,
-    run = function()
-      vim.fn["mkdp#util#install"]()
-    end,
-  },
+  -- {
+  --   "iamcco/markdown-preview.nvim",
+  --   ft = "markdown",
+  --   lazy = true,
+  --   run = function()
+  --     vim.fn["mkdp#util#install"]()
+  --   end,
+  -- },
   {
     "javiorfo/nvim-wildcat",
-    lazy = true,
+    lazy = false,
     cmd = { "WildcatRun", "WildcatUp", "WildcatInfo" },
     dependencies = { "javiorfo/nvim-popcorn" },
     opts = {
@@ -116,72 +97,16 @@ return {
       end
     end,
   },
-  {
-    "Saghen/blink.cmp",
-    optional = true,
-    opts = function(_, opts)
-      opts.keymap = {
-        preset = "enter",
-        ["<C-o>"] = { "show" },
-        ["<Tab>"] = {
-          LazyVim.cmp.map({ "snippet_forward", "ai_accept" }),
-          "fallback",
-        },
-      }
-    end,
-  },
-  {
-    "TabbyML/vim-tabby",
-    lazy = false,
-    dependencies = {
-      "neovim/nvim-lspconfig",
-    },
-    init = function()
-      vim.g.tabby_agent_start_command = { "npx", "tabby-agent", "--stdio" }
-      vim.g.tabby_inline_completion_trigger = "auto"
-    end,
-  },
-  {
-    "xiyaowong/transparent.nvim",
-    config = function(_, opts)
-      -- Optional, you don't have to run setup.
-      require("transparent").setup({
-        -- table: default groups
-        groups = {
-          "Normal",
-          "NormalNC",
-          "Comment",
-          "Constant",
-          "Special",
-          "Identifier",
-          "Statement",
-          "PreProc",
-          "Type",
-          "Underlined",
-          "Todo",
-          "String",
-          "Function",
-          "Conditional",
-          "Repeat",
-          "Operator",
-          "Structure",
-          "LineNr",
-          "NonText",
-          "SignColumn",
-          "CursorLine",
-          "CursorLineNr",
-          "StatusLine",
-          "StatusLineNC",
-          "EndOfBuffer",
-        },
-        -- table: additional groups that should be cleared
-        extra_groups = {},
-        -- table: groups you don't want to clear
-        exclude_groups = {},
-        -- function: code to be executed after highlight groups are cleared
-        -- Also the user event "TransparentClear" will be triggered
-        on_clear = function() end,
-      })
-    end,
-  },
+
+  -- {
+  --   "TabbyML/vim-tabby",
+  --   lazy = false,
+  --   dependencies = {
+  --     "neovim/nvim-lspconfig",
+  --   },
+  --   init = function()
+  --     vim.g.tabby_agent_start_command = { "npx", "tabby-agent", "--stdio" }
+  --     vim.g.tabby_inline_completion_trigger = "auto"
+  --   end,
+  -- },
 }
