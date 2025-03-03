@@ -24,7 +24,7 @@ return {
       local keys = require("lazyvim.plugins.lsp.keymaps").get()
       keys[#keys + 1] = { "<c-k>", mode = "i", false }
       keys[#keys + 1] = {
-        "<c-i>",
+        "<c-s>",
         function()
           return vim.lsp.buf.signature_help()
         end,

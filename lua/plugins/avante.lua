@@ -49,7 +49,7 @@ return {
     opts = {
       provider = "deepseek",
       auto_suggestions_provider = "deepseek",
-      cursor_applying_provider = "deepseek",
+      cursor_applying_provider = "siliconflow",
       behaviour = {
         auto_suggestions = true, -- Experimental stage
         auto_set_highlight_group = true,
@@ -59,6 +59,9 @@ return {
         minimize_diff = true, -- Whether to remove unchanged lines when applying a code block
         enable_token_counting = true, -- Whether to enable token counting. Default to true.
         enable_cursor_planning_mode = false, -- Whether to enable Cursor Planning Mode. Default to false.
+      },
+      web_search_engine = {
+        disable_tools = true,
       },
       vendors = {
         -- code = {
@@ -70,8 +73,22 @@ return {
         deepseek = {
           __inherited_from = "openai",
           api_key_name = "DEEPSEEK_API_KEY",
-          endpoint = "https://api.deepseek.com",
-          model = "deepseek-coder",
+          endpoint = "https://api.deepseek.com/beta",
+          model = "deepseek-chat",
+          temperature = 0,
+        },
+        siliconflow = {
+          __inherited_from = "openai",
+          api_key_name = "SILICONFLOW_API_KEY",
+          endpoint = "https://api.siliconflow.cn/v1",
+          model = "Qwen/Qwen2.5-7B-Instruct",
+          temperature = 0,
+        },
+        gpustack = {
+          __inherited_from = "openai",
+          api_key_name = "GPUSTACK_API_KEY",
+          endpoint = "http://100.64.0.1:9180/v1",
+          model = "qwen2.5",
           temperature = 0,
         },
       },
@@ -86,6 +103,10 @@ return {
       -- },
       rag_service = {
         enabled = true, -- Enables the rag service, requires OPENAI_API_KEY to be set
+        provider = "ollama",
+        endpoint = "http://172.17.0.1:11434",
+        llm_model = "deepseek-r1",
+        embed_model = "bge-m3",
       },
     },
     -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
