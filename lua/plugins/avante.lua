@@ -48,10 +48,10 @@ return {
     version = false, -- Set this to "*" to always pull the latest release version, or set it to false to update to the latest code changes.
     opts = {
       provider = "deepseek",
-      auto_suggestions_provider = "deepseek",
+      auto_suggestions_provider = "code",
       cursor_applying_provider = "siliconflow",
       behaviour = {
-        auto_suggestions = true, -- Experimental stage
+        auto_suggestions = false, -- Experimental stage
         auto_set_highlight_group = true,
         auto_set_keymaps = true,
         auto_apply_diff_after_generation = true,
@@ -64,16 +64,16 @@ return {
         disable_tools = true,
       },
       vendors = {
-        -- code = {
-        --   __inherited_from = "openai",
-        --   api_key_name = "",
-        --   endpoint = "http://localhost:11434/v1",
-        --   model = "codellama:7b",
-        -- },
+        code = {
+          __inherited_from = "openai",
+          api_key_name = "",
+          endpoint = "http://localhost:11434/v1",
+          model = "starcoder2:3b",
+        },
         deepseek = {
           __inherited_from = "openai",
           api_key_name = "DEEPSEEK_API_KEY",
-          endpoint = "https://api.deepseek.com/beta",
+          endpoint = "https://api.deepseek.com",
           model = "deepseek-chat",
           temperature = 0,
         },
@@ -106,7 +106,34 @@ return {
         provider = "ollama",
         endpoint = "http://172.17.0.1:11434",
         llm_model = "deepseek-r1",
-        embed_model = "bge-m3",
+        embed_model = "EntropyYue/jina-embeddings-v2-base-zh",
+      },
+      custom_tools = {
+        {
+          name = "run_go_tests",
+          description = "Run Go unit tests and return results",
+          command = "go test -v ./...",
+          param = {
+            type = "table",
+            fields = {},
+          },
+          returns = {
+            {
+              name = "result",
+              description = "Result of the fetch",
+              type = "string",
+            },
+            {
+              name = "error",
+              description = "Error message if the fetch was not successful",
+              type = "string",
+              optional = true,
+            },
+          },
+          func = function()
+            return vim.fn.system(string.format("go test -v ./..."))
+          end,
+        },
       },
     },
     -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
