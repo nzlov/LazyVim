@@ -42,7 +42,8 @@ return {
     },
   },
   {
-    dir = "~/workspaces/nvim/avante.nvim",
+    --dir = "~/workspaces/nvim/avante.nvim",
+    "yetone/avante.nvim",
     event = "VeryLazy",
     lazy = false,
     version = false, -- Set this to "*" to always pull the latest release version, or set it to false to update to the latest code changes.
@@ -103,7 +104,7 @@ return {
       --   -- reasoning_effort = "high" -- only supported for reasoning models (o1, etc.)
       -- },
       rag_service = {
-        enabled = false, -- Enables the rag service, requires OPENAI_API_KEY to be set
+        enabled = true, -- Enables the rag service, requires OPENAI_API_KEY to be set
         provider = "ollama",
         endpoint = "http://172.17.0.1:11434",
         llm_model = "deepseek-r1",
