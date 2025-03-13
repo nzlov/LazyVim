@@ -103,7 +103,7 @@ return {
       --   -- reasoning_effort = "high" -- only supported for reasoning models (o1, etc.)
       -- },
       rag_service = {
-        enabled = true, -- Enables the rag service, requires OPENAI_API_KEY to be set
+        enabled = false, -- Enables the rag service, requires OPENAI_API_KEY to be set
         provider = "ollama",
         endpoint = "http://172.17.0.1:11434",
         llm_model = "deepseek-r1",
