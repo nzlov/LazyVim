@@ -66,6 +66,12 @@ return {
         -- disable_tools = true,
       },
       vendors = {
+        mercury = {
+          __inherited_from = "openai",
+          api_key_name = "",
+          endpoint = "http://localhost:8080",
+          model = "lambda.mercury-coder-small",
+        },
         code = {
           __inherited_from = "openai",
           api_key_name = "",
@@ -78,6 +84,7 @@ return {
           endpoint = "https://api.deepseek.com",
           model = "deepseek-chat",
           temperature = 0,
+          max_tokens = 8192,
         },
         siliconflow = {
           __inherited_from = "openai",
@@ -110,13 +117,13 @@ return {
         llm_model = "deepseek-r1",
         embed_model = "EntropyYue/jina-embeddings-v2-base-zh",
       },
-      system_prompt = function()
-        local hub = require("mcphub").get_hub_instance()
-        return hub:get_active_servers_prompt()
-      end,
+      -- system_prompt = function()
+      --   local hub = require("mcphub").get_hub_instance()
+      --   return hub:get_active_servers_prompt()
+      -- end,
       custom_tools = function()
         return {
-          require("mcphub.extensions.avante").mcp_tool(),
+          -- require("mcphub.extensions.avante").mcp_tool(),
           {
             name = "run_go_tests", -- Unique name for the tool
             description = "Run Go unit tests and return results", -- Description shown to AI
@@ -186,32 +193,32 @@ return {
         },
         ft = { "markdown", "Avante" },
       },
-      {
-        "ravitemer/mcphub.nvim",
-        build = "npm install -g mcp-hub@latest", -- Installs required mcp-hub npm module
-        config = function()
-          require("mcphub").setup({
-            -- Required options
-            port = 3000, -- Port for MCP Hub server
-            config = vim.fn.expand("~/mcpservers.json"), -- Absolute path to config file
-
-            -- Optional options
-            on_ready = function(hub)
-              -- Called when hub is ready
-            end,
-            on_error = function(err)
-              -- Called on errors
-            end,
-            shutdown_delay = 0, -- Wait 0ms before shutting down server after last client exits
-            log = {
-              level = vim.log.levels.WARN,
-              to_file = false,
-              file_path = nil,
-              prefix = "MCPHub",
-            },
-          })
-        end,
-      },
+      -- {
+      --   "ravitemer/mcphub.nvim",
+      --   build = "npm install -g mcp-hub@latest", -- Installs required mcp-hub npm module
+      --   config = function()
+      --     require("mcphub").setup({
+      --       -- Required options
+      --       port = 3000, -- Port for MCP Hub server
+      --       config = vim.fn.expand("~/mcpservers.json"), -- Absolute path to config file
+      --
+      --       -- Optional options
+      --       on_ready = function(hub)
+      --         -- Called when hub is ready
+      --       end,
+      --       on_error = function(err)
+      --         -- Called on errors
+      --       end,
+      --       shutdown_delay = 0, -- Wait 0ms before shutting down server after last client exits
+      --       log = {
+      --         level = vim.log.levels.WARN,
+      --         to_file = false,
+      --         file_path = nil,
+      --         prefix = "MCPHub",
+      --       },
+      --     })
+      --   end,
+      -- },
     },
   },
 }
