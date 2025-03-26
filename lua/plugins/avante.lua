@@ -1,48 +1,79 @@
 return {
   {
-    "Saghen/blink.cmp",
+    "saghen/blink.cmp",
     optional = true,
     opts = {
-      keymap = {
-        preset = "enter",
-        ["<C-o>"] = { "show" },
-        ["<Tab>"] = {
-          LazyVim.cmp.map({ "snippet_forward", "ai_accept" }),
-          "fallback",
-        },
+      snippets = {
+        expand = function(snippet, _)
+          return LazyVim.cmp.expand(snippet)
+        end,
+      },
+      appearance = {
+        -- sets the fallback highlight groups to nvim-cmp's highlight groups
+        -- useful for when your theme doesn't support blink.cmp
+        -- will be removed in a future release, assuming themes add support
+        use_nvim_cmp_as_default = false,
+        -- set to 'mono' for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
+        -- adjusts spacing to ensure icons are aligned
+        nerd_font_variant = "mono",
       },
       completion = {
+        accept = {
+          -- experimental auto-brackets support
+          auto_brackets = {
+            enabled = true,
+          },
+        },
         menu = {
           draw = {
             columns = {
               { "label", "label_description", gap = 1 },
               { "kind_icon", "source_name" },
             },
-            treesitter = {},
+            treesitter = { "lsp" },
           },
         },
+        documentation = {
+          auto_show = true,
+          auto_show_delay_ms = 200,
+        },
+        ghost_text = {
+          enabled = vim.g.ai_cmp,
+        },
       },
+
+      -- experimental signature help support
+      -- signature = { enabled = true },
+
       sources = {
-        compat = {},
-        -- Add 'avante' to the list
-        default = { "avante", "lsp", "path", "buffer" },
-        providers = {
-          avante = {
-            module = "blink-cmp-avante",
-            name = "Avante",
-            opts = {
-              -- options for blink-cmp-avante
-            },
-          },
+        -- adding any nvim-cmp sources here will enable them
+        -- with blink.compat
+        compat = {
+          "avante_commands",
+          "avante_mentions",
+          "avante_files",
+        },
+        default = { "lsp", "path", "snippets", "buffer" },
+      },
+
+      cmdline = {
+        enabled = false,
+      },
+
+      keymap = {
+        preset = "enter",
+        ["<C-y>"] = { "select_and_accept" },
+        ["<C-o>"] = { "show" },
+        ["<Tab>"] = {
+          LazyVim.cmp.map({ "snippet_forward", "ai_accept" }),
+          "fallback",
         },
       },
     },
-    dependencies = {
-      "Kaiser-Yang/blink-cmp-avante",
-    },
+    dependencies = {},
   },
   {
-    --dir = "~/workspaces/nvim/avante.nvim",
+    -- dir = "~/workspaces/nvim/avante.nvim",
     "yetone/avante.nvim",
     event = "VeryLazy",
     lazy = false,
@@ -53,14 +84,19 @@ return {
       auto_suggestions_provider = "code",
       cursor_applying_provider = "siliconflow",
       behaviour = {
+        auto_focus_sidebar = true,
         auto_suggestions = false, -- Experimental stage
+        auto_suggestions_respect_ignore = false,
         auto_set_highlight_group = true,
         auto_set_keymaps = true,
         auto_apply_diff_after_generation = true,
+        jump_result_buffer_on_finish = false,
         support_paste_from_clipboard = false,
-        minimize_diff = true, -- Whether to remove unchanged lines when applying a code block
-        enable_token_counting = true, -- Whether to enable token counting. Default to true.
-        enable_cursor_planning_mode = false, -- Whether to enable Cursor Planning Mode. Default to false.
+        minimize_diff = true,
+        enable_token_counting = true,
+        enable_cursor_planning_mode = false,
+        enable_claude_text_editor_tool_mode = false,
+        use_cwd_as_project_root = true,
       },
       web_search_engine = {
         -- disable_tools = true,
@@ -82,7 +118,7 @@ return {
           __inherited_from = "openai",
           api_key_name = "DEEPSEEK_API_KEY",
           endpoint = "https://api.deepseek.com",
-          model = "deepseek-chat",
+          model = "deepseek-coder",
           temperature = 0,
           max_tokens = 8192,
         },
@@ -121,44 +157,44 @@ return {
       --   local hub = require("mcphub").get_hub_instance()
       --   return hub:get_active_servers_prompt()
       -- end,
-      custom_tools = function()
-        return {
-          -- require("mcphub.extensions.avante").mcp_tool(),
-          {
-            name = "run_go_tests", -- Unique name for the tool
-            description = "Run Go unit tests and return results", -- Description shown to AI
-            command = "go test -v ./...", -- Shell command to execute
-            param = { -- Input parameters (optional)
-              type = "table",
-              fields = {
-                {
-                  name = "target",
-                  description = "Package or directory to test (e.g. './pkg/...' or './internal/pkg')",
-                  type = "string",
-                  optional = true,
-                },
-              },
-            },
-            returns = { -- Expected return values
-              {
-                name = "result",
-                description = "Result of the fetch",
-                type = "string",
-              },
-              {
-                name = "error",
-                description = "Error message if the fetch was not successful",
-                type = "string",
-                optional = true,
-              },
-            },
-            func = function(params, on_log, on_complete) -- Custom function to execute
-              local target = params.target or "./..."
-              return vim.fn.system(string.format("go test -v %s", target))
-            end,
-          },
-        }
-      end,
+      -- custom_tools = function()
+      --   return {
+      --     -- require("mcphub.extensions.avante").mcp_tool(),
+      --     {
+      --       name = "run_go_tests", -- Unique name for the tool
+      --       description = "Run Go unit tests and return results", -- Description shown to AI
+      --       command = "go test -v ./...", -- Shell command to execute
+      --       param = { -- Input parameters (optional)
+      --         type = "table",
+      --         fields = {
+      --           {
+      --             name = "target",
+      --             description = "Package or directory to test (e.g. './pkg/...' or './internal/pkg')",
+      --             type = "string",
+      --             optional = true,
+      --           },
+      --         },
+      --       },
+      --       returns = { -- Expected return values
+      --         {
+      --           name = "result",
+      --           description = "Result of the fetch",
+      --           type = "string",
+      --         },
+      --         {
+      --           name = "error",
+      --           description = "Error message if the fetch was not successful",
+      --           type = "string",
+      --           optional = true,
+      --         },
+      --       },
+      --       func = function(params, on_log, on_complete) -- Custom function to execute
+      --         local target = params.target or "./..."
+      --         return vim.fn.system(string.format("go test -v %s", target))
+      --       end,
+      --     },
+      --   }
+      -- end,
     },
     -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
     build = "make",
