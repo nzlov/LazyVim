@@ -96,7 +96,7 @@ return {
         enable_token_counting = true,
         enable_cursor_planning_mode = false,
         enable_claude_text_editor_tool_mode = false,
-        use_cwd_as_project_root = true,
+        use_cwd_as_project_root = false,
       },
       web_search_engine = {
         -- disable_tools = true,
@@ -118,7 +118,7 @@ return {
           __inherited_from = "openai",
           api_key_name = "DEEPSEEK_API_KEY",
           endpoint = "https://api.deepseek.com",
-          model = "deepseek-coder",
+          model = "deepseek-chat",
           temperature = 0,
           max_tokens = 8192,
         },
@@ -126,7 +126,7 @@ return {
           __inherited_from = "openai",
           api_key_name = "SILICONFLOW_API_KEY",
           endpoint = "https://api.siliconflow.cn/v1",
-          model = "Qwen/Qwen2.5-7B-Instruct",
+          model = "deepseek-ai/DeepSeek-V3",
           temperature = 0,
         },
         gpustack = {
@@ -156,6 +156,7 @@ return {
       system_prompt = function()
         local hub = require("mcphub").get_hub_instance()
         return hub:get_active_servers_prompt()
+          .. "\n需要的数据优先使用tools获取。\n使用中文回答所有问题。"
       end,
       custom_tools = function()
         return {
@@ -233,9 +234,11 @@ return {
         "ravitemer/mcphub.nvim",
         build = "npm install -g mcp-hub@latest", -- Installs required mcp-hub npm module
         config = function()
+          math.randomseed()
           require("mcphub").setup({
             -- Required options
-            port = 3000, -- Port for MCP Hub server
+            port = math.random(50000, 50100), -- Port for MCP Hub server
+
             config = vim.fn.expand("~/mcpservers.json"), -- Absolute path to config file
 
             -- Optional options
