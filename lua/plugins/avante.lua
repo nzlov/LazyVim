@@ -153,48 +153,48 @@ return {
         llm_model = "deepseek-r1",
         embed_model = "EntropyYue/jina-embeddings-v2-base-zh",
       },
-      -- system_prompt = function()
-      --   local hub = require("mcphub").get_hub_instance()
-      --   return hub:get_active_servers_prompt()
-      -- end,
-      -- custom_tools = function()
-      --   return {
-      --     -- require("mcphub.extensions.avante").mcp_tool(),
-      --     {
-      --       name = "run_go_tests", -- Unique name for the tool
-      --       description = "Run Go unit tests and return results", -- Description shown to AI
-      --       command = "go test -v ./...", -- Shell command to execute
-      --       param = { -- Input parameters (optional)
-      --         type = "table",
-      --         fields = {
-      --           {
-      --             name = "target",
-      --             description = "Package or directory to test (e.g. './pkg/...' or './internal/pkg')",
-      --             type = "string",
-      --             optional = true,
-      --           },
-      --         },
-      --       },
-      --       returns = { -- Expected return values
-      --         {
-      --           name = "result",
-      --           description = "Result of the fetch",
-      --           type = "string",
-      --         },
-      --         {
-      --           name = "error",
-      --           description = "Error message if the fetch was not successful",
-      --           type = "string",
-      --           optional = true,
-      --         },
-      --       },
-      --       func = function(params, on_log, on_complete) -- Custom function to execute
-      --         local target = params.target or "./..."
-      --         return vim.fn.system(string.format("go test -v %s", target))
-      --       end,
-      --     },
-      --   }
-      -- end,
+      system_prompt = function()
+        local hub = require("mcphub").get_hub_instance()
+        return hub:get_active_servers_prompt()
+      end,
+      custom_tools = function()
+        return {
+          require("mcphub.extensions.avante").mcp_tool(),
+          {
+            name = "run_go_tests", -- Unique name for the tool
+            description = "Run Go unit tests and return results", -- Description shown to AI
+            command = "go test -v ./...", -- Shell command to execute
+            param = { -- Input parameters (optional)
+              type = "table",
+              fields = {
+                {
+                  name = "target",
+                  description = "Package or directory to test (e.g. './pkg/...' or './internal/pkg')",
+                  type = "string",
+                  optional = true,
+                },
+              },
+            },
+            returns = { -- Expected return values
+              {
+                name = "result",
+                description = "Result of the fetch",
+                type = "string",
+              },
+              {
+                name = "error",
+                description = "Error message if the fetch was not successful",
+                type = "string",
+                optional = true,
+              },
+            },
+            func = function(params, on_log, on_complete) -- Custom function to execute
+              local target = params.target or "./..."
+              return vim.fn.system(string.format("go test -v %s", target))
+            end,
+          },
+        }
+      end,
     },
     -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
     build = "make",
@@ -229,32 +229,32 @@ return {
         },
         ft = { "markdown", "Avante" },
       },
-      -- {
-      --   "ravitemer/mcphub.nvim",
-      --   build = "npm install -g mcp-hub@latest", -- Installs required mcp-hub npm module
-      --   config = function()
-      --     require("mcphub").setup({
-      --       -- Required options
-      --       port = 3000, -- Port for MCP Hub server
-      --       config = vim.fn.expand("~/mcpservers.json"), -- Absolute path to config file
-      --
-      --       -- Optional options
-      --       on_ready = function(hub)
-      --         -- Called when hub is ready
-      --       end,
-      --       on_error = function(err)
-      --         -- Called on errors
-      --       end,
-      --       shutdown_delay = 0, -- Wait 0ms before shutting down server after last client exits
-      --       log = {
-      --         level = vim.log.levels.WARN,
-      --         to_file = false,
-      --         file_path = nil,
-      --         prefix = "MCPHub",
-      --       },
-      --     })
-      --   end,
-      -- },
+      {
+        "ravitemer/mcphub.nvim",
+        build = "npm install -g mcp-hub@latest", -- Installs required mcp-hub npm module
+        config = function()
+          require("mcphub").setup({
+            -- Required options
+            port = 3000, -- Port for MCP Hub server
+            config = vim.fn.expand("~/mcpservers.json"), -- Absolute path to config file
+
+            -- Optional options
+            on_ready = function(hub)
+              -- Called when hub is ready
+            end,
+            on_error = function(err)
+              -- Called on errors
+            end,
+            shutdown_delay = 0, -- Wait 0ms before shutting down server after last client exits
+            log = {
+              level = vim.log.levels.WARN,
+              to_file = false,
+              file_path = nil,
+              prefix = "MCPHub",
+            },
+          })
+        end,
+      },
     },
   },
 }
