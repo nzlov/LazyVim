@@ -233,13 +233,24 @@ return {
       {
         "ravitemer/mcphub.nvim",
         build = "npm install -g mcp-hub@latest", -- Installs required mcp-hub npm module
+        branch = "native-servers",
         config = function()
           math.randomseed()
+          local cfg = function()
+            local cwd_config = vim.fn.getcwd() .. "/mcpservers.json"
+            if vim.fn.filereadable(cwd_config) == 1 then
+              return cwd_config
+            else
+              return vim.fn.expand("~/mcpservers.json")
+            end
+          end
+
           require("mcphub").setup({
             -- Required options
+            --port = 30000, -- Port for MCP Hub server
             port = math.random(50000, 50100), -- Port for MCP Hub server
 
-            config = vim.fn.expand("~/mcpservers.json"), -- Absolute path to config file
+            config = cfg(), -- Prioritize config in current directory, fall back to home
 
             -- Optional options
             on_ready = function(hub)
