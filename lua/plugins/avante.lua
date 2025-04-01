@@ -158,6 +158,7 @@ return {
         return hub:get_active_servers_prompt()
           .. "\n需要的数据优先使用tools获取。\n使用中文回答所有问题。"
       end,
+      disabled_tools = { "delete_file", "delete_dir", "read_file", "rename_file", "search_files", "list_files" },
       custom_tools = function()
         return {
           require("mcphub.extensions.avante").mcp_tool(),
