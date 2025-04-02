@@ -158,7 +158,18 @@ return {
         return hub:get_active_servers_prompt()
           .. "\n需要的数据优先使用tools获取。\n使用中文回答所有问题。"
       end,
-      disabled_tools = { "delete_file", "delete_dir", "read_file", "rename_file", "search_files", "list_files" },
+      disabled_tools = {
+        "list_files",
+        "search_files",
+        "read_file",
+        "create_file",
+        "rename_file",
+        "delete_file",
+        "create_dir",
+        "rename_dir",
+        "delete_dir",
+        "bash",
+      },
       custom_tools = function()
         return {
           require("mcphub.extensions.avante").mcp_tool(),
@@ -234,7 +245,6 @@ return {
       {
         "ravitemer/mcphub.nvim",
         build = "npm install -g mcp-hub@latest", -- Installs required mcp-hub npm module
-        branch = "native-servers",
         config = function()
           math.randomseed()
           local cfg = function()
