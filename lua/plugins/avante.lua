@@ -1,29 +1,9 @@
 return {
   {
     "saghen/blink.cmp",
-    optional = true,
+    --optional = true,
     opts = {
-      snippets = {
-        expand = function(snippet, _)
-          return LazyVim.cmp.expand(snippet)
-        end,
-      },
-      appearance = {
-        -- sets the fallback highlight groups to nvim-cmp's highlight groups
-        -- useful for when your theme doesn't support blink.cmp
-        -- will be removed in a future release, assuming themes add support
-        use_nvim_cmp_as_default = false,
-        -- set to 'mono' for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
-        -- adjusts spacing to ensure icons are aligned
-        nerd_font_variant = "mono",
-      },
       completion = {
-        accept = {
-          -- experimental auto-brackets support
-          auto_brackets = {
-            enabled = true,
-          },
-        },
         menu = {
           draw = {
             columns = {
@@ -33,31 +13,36 @@ return {
             treesitter = { "lsp" },
           },
         },
-        documentation = {
-          auto_show = true,
-          auto_show_delay_ms = 200,
-        },
-        ghost_text = {
-          enabled = vim.g.ai_cmp,
-        },
       },
 
-      -- experimental signature help support
-      -- signature = { enabled = true },
-
       sources = {
-        -- adding any nvim-cmp sources here will enable them
-        -- with blink.compat
+        default = { "avante_commands", "avante_mentions", "avante_files" },
         compat = {
           "avante_commands",
           "avante_mentions",
           "avante_files",
         },
-        default = { "lsp", "path", "snippets", "buffer" },
-      },
-
-      cmdline = {
-        enabled = false,
+        -- LSP score_offset is typically 60
+        providers = {
+          avante_commands = {
+            name = "avante_commands",
+            module = "blink.compat.source",
+            score_offset = 90,
+            opts = {},
+          },
+          avante_files = {
+            name = "avante_files",
+            module = "blink.compat.source",
+            score_offset = 100,
+            opts = {},
+          },
+          avante_mentions = {
+            name = "avante_mentions",
+            module = "blink.compat.source",
+            score_offset = 1000,
+            opts = {},
+          },
+        },
       },
 
       keymap = {
@@ -70,10 +55,10 @@ return {
         },
       },
     },
-    dependencies = {},
+    dependencies = { "saghen/blink.compat" },
   },
   {
-    -- dir = "~/workspaces/nvim/avante.nvim",
+    --dir = "~/workspaces/nvim/avante.nvim",
     "yetone/avante.nvim",
     event = "VeryLazy",
     lazy = false,
@@ -101,7 +86,7 @@ return {
       web_search_engine = {
         -- disable_tools = true,
       },
-      vendors = {
+      providers = {
         mercury = {
           __inherited_from = "openai",
           api_key_name = "",
@@ -112,29 +97,29 @@ return {
           __inherited_from = "openai",
           api_key_name = "",
           endpoint = "http://localhost:11434/v1",
-          model = "starcoder2:3b",
+          model = "qwen3:8b",
         },
         deepseek = {
           __inherited_from = "openai",
           api_key_name = "DEEPSEEK_API_KEY",
           endpoint = "https://api.deepseek.com",
           model = "deepseek-chat",
-          temperature = 0,
-          max_tokens = 8192,
+          extra_request_body = {
+            temperature = 0,
+            max_completion_tokens = 8192,
+          },
         },
         siliconflow = {
           __inherited_from = "openai",
           api_key_name = "SILICONFLOW_API_KEY",
           endpoint = "https://api.siliconflow.cn/v1",
           model = "deepseek-ai/DeepSeek-V3",
-          temperature = 0,
         },
         gpustack = {
           __inherited_from = "openai",
           api_key_name = "GPUSTACK_API_KEY",
           endpoint = "http://100.64.0.1:9180/v1",
           model = "qwen2.5",
-          temperature = 0,
         },
       },
       -- provider = "openai",
@@ -147,7 +132,7 @@ return {
       --   -- reasoning_effort = "high" -- only supported for reasoning models (o1, etc.)
       -- },
       rag_service = {
-        enabled = true, -- Enables the rag service, requires OPENAI_API_KEY to be set
+        enabled = false, -- Enables the rag service, requires OPENAI_API_KEY to be set
         provider = "ollama",
         endpoint = "http://172.17.0.1:11434",
         llm_model = "deepseek-r1",
@@ -156,7 +141,6 @@ return {
       system_prompt = function()
         local hub = require("mcphub").get_hub_instance()
         return hub:get_active_servers_prompt()
-          .. "\n需要的数据优先使用tools获取。\n使用中文回答所有问题。"
       end,
       disabled_tools = {
         "list_files",
@@ -208,6 +192,11 @@ return {
           },
         }
       end,
+      --- @alias FileSelectorProvider "native" | "fzf" | "mini.pick" | "snacks" | "telescope" | string
+      file_selector = {
+        provider = "fzf", -- Avoid native provider issues
+        provider_opts = {},
+      },
     },
     -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
     build = "make",
@@ -279,6 +268,15 @@ return {
             },
           })
         end,
+      },
+    },
+  },
+  {
+    "folke/which-key.nvim",
+    optional = true,
+    opts = {
+      spec = {
+        { "<leader>a", group = "ai" },
       },
     },
   },
