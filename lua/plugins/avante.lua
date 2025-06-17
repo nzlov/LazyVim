@@ -140,7 +140,7 @@ return {
       },
       system_prompt = function()
         local hub = require("mcphub").get_hub_instance()
-        return hub:get_active_servers_prompt()
+        return (hub:get_active_servers_prompt() or "") .. "使用中文回答一切问题"
       end,
       disabled_tools = {
         "list_files",
@@ -251,6 +251,18 @@ return {
             port = math.random(50000, 50100), -- Port for MCP Hub server
 
             config = cfg(), -- Prioritize config in current directory, fall back to home
+            shutdown_delay = 60 * 10 * 000, -- Delay in ms before shutting down the server when last instance closes (default: 10 minutes)
+            use_bundled_binary = false, -- Use local `mcp-hub` binary (set this to true when using build = "bundled_build.lua")
+            mcp_request_timeout = 60000, --Max time allowed for a MCP tool or resource to execute in milliseconds, set longer for long running tasks
+
+            ---Chat-plugin related options-----------------
+            auto_approve = false, -- Auto approve mcp tool calls
+            auto_toggle_mcp_servers = true, -- Let LLMs start and stop MCP servers automatically
+            extensions = {
+              avante = {
+                make_slash_commands = true, -- make /slash commands from MCP server prompts
+              },
+            },
 
             -- Optional options
             on_ready = function(hub)
