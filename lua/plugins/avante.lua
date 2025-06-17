@@ -103,7 +103,7 @@ return {
           __inherited_from = "openai",
           api_key_name = "DEEPSEEK_API_KEY",
           endpoint = "https://api.deepseek.com",
-          model = "deepseek-chat",
+          model = "deepseek-reasoner",
           extra_request_body = {
             temperature = 0,
             max_completion_tokens = 8192,
@@ -140,7 +140,7 @@ return {
       },
       system_prompt = function()
         local hub = require("mcphub").get_hub_instance()
-        return (hub:get_active_servers_prompt() or "") .. "使用中文回答一切问题"
+        return (hub and hub:get_active_servers_prompt() or "") .. "\n使用中文回答一切问题"
       end,
       disabled_tools = {
         "list_files",
