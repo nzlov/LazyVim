@@ -57,23 +57,23 @@ return {
   --     vim.fn["mkdp#util#install"]()
   --   end,
   -- },
-  {
-    "javiorfo/nvim-wildcat",
-    lazy = false,
-    cmd = { "WildcatRun", "WildcatUp", "WildcatInfo" },
-    dependencies = { "javiorfo/nvim-popcorn" },
-    opts = {
-      -- Not necessary. Only if you want to change the setup
-      -- The following are the default values
-
-      console_size = 15,
-      tomcat = {
-        home = "/home/nzlov/workspaces/apache-tomcat-9.0.97",
-        app_base = "webapps",
-        default = true,
-      },
-    },
-  },
+  -- {
+  --   "javiorfo/nvim-wildcat",
+  --   lazy = false,
+  --   cmd = { "WildcatRun", "WildcatUp", "WildcatInfo" },
+  --   dependencies = { "javiorfo/nvim-popcorn" },
+  --   opts = {
+  --     -- Not necessary. Only if you want to change the setup
+  --     -- The following are the default values
+  --
+  --     console_size = 15,
+  --     tomcat = {
+  --       home = "/home/nzlov/workspaces/apache-tomcat-9.0.97",
+  --       app_base = "webapps",
+  --       default = true,
+  --     },
+  --   },
+  -- },
   {
     "rcarriga/nvim-dap-ui",
     keys = {
