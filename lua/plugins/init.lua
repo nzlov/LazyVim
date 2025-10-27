@@ -19,23 +19,6 @@ return {
     },
   },
   {
-    "neovim/nvim-lspconfig",
-    opts = function(_, opts)
-      local keys = require("lazyvim.plugins.lsp.keymaps").get()
-      keys[#keys + 1] = { "<c-k>", mode = "i", false }
-      keys[#keys + 1] = {
-        "<c-s>",
-        function()
-          return vim.lsp.buf.signature_help()
-        end,
-        mode = "i",
-        desc = "Signature Help",
-        has = "signatureHelp",
-      }
-      opts.inlay_hints.enabled = false
-    end,
-  },
-  {
     "mbbill/undotree",
     cmd = { "UndotreeToggle" },
     keys = {
