@@ -10,7 +10,7 @@ vim.api.nvim_create_autocmd("FileType", {
   group = augroup("nzjava"),
   pattern = { "java" },
   callback = function()
-    vim.opt.shiftwidth = 2
-    vim.opt.tabstop = 2
+    vim.opt.shiftwidth = 4
+    vim.opt.tabstop = 4
   end,
 })
