@@ -74,7 +74,7 @@ return {
         auto_suggestions_respect_ignore = false,
         auto_set_highlight_group = true,
         auto_set_keymaps = true,
-        auto_apply_diff_after_generation = true,
+        auto_apply_diff_after_generation = false,
         jump_result_buffer_on_finish = false,
         support_paste_from_clipboard = false,
         minimize_diff = true,
@@ -125,12 +125,25 @@ return {
       --   max_tokens = 4096,
       --   -- reasoning_effort = "high" -- only supported for reasoning models (o1, etc.)
       -- },
-      rag_service = {
-        enabled = false, -- Enables the rag service, requires OPENAI_API_KEY to be set
-        provider = "ollama",
-        endpoint = "http://172.17.0.1:11434",
-        llm_model = "deepseek-r1",
-        embed_model = "EntropyYue/jina-embeddings-v2-base-zh",
+      rag_service = { -- RAG Service configuration
+        enabled = false, -- Enables the RAG service
+        host_mount = os.getenv("HOME"), -- Host mount path for the rag service (Docker will mount this path)
+        runner = "docker", -- Runner for the RAG service (can use docker or nix)
+        llm = { -- Language Model (LLM) configuration for RAG service
+          provider = "ollama", -- LLM provider
+          api_key = "", -- Environment variable name for the embedding API key
+          endpoint = "http://172.17.0.1:11434",
+          model = "qwen3-coder:latest", -- LLM model name
+          extra = nil, -- Additional configuration options for LLM
+        },
+        embed = { -- Embedding model configuration for RAG service
+          provider = "ollama", -- Embedding provider
+          endpoint = "http://172.17.0.1:11434",
+          api_key = "", -- Environment variable name for the embedding API key
+          embed_model = "EntropyYue/jina-embeddings-v2-base-zh",
+          extra = nil, -- Additional configuration options for the embedding model
+        },
+        docker_extra_args = "", -- Extra arguments to pass to the docker command
       },
       system_prompt = function()
         local hub = require("mcphub").get_hub_instance()
