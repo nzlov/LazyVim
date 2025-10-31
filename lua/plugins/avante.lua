@@ -335,10 +335,6 @@ return {
               file_path = nil,
               prefix = "MCPHub",
             },
-
-            -- Global environment variables available to all MCP servers
-            -- Can be a table or a function(context) -> table
-            global_env = {},
           })
         end,
       },
