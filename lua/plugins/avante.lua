@@ -68,6 +68,10 @@ return {
       provider = "deepseek",
       auto_suggestions_provider = "qwen3code",
       cursor_applying_provider = "qwen3code",
+      rules = {
+        project_dir = nil,
+        global_dir = "$HOME/.config/nvim/rules/",
+      },
       behaviour = {
         auto_focus_sidebar = true,
         auto_suggestions = false, -- Experimental stage
@@ -79,9 +83,21 @@ return {
         support_paste_from_clipboard = false,
         minimize_diff = true,
         enable_token_counting = true,
-        enable_cursor_planning_mode = false,
-        enable_claude_text_editor_tool_mode = false,
         use_cwd_as_project_root = false,
+        auto_focus_on_diff_view = false,
+        ---@type boolean | string[] -- true: auto-approve all tools, false: normal prompts, string[]: auto-approve specific tools by name
+        auto_approve_tool_permissions = false, -- Default: auto-approve all tools (no prompts)
+        auto_check_diagnostics = true,
+        enable_fastapply = false,
+        include_generated_by_commit_line = false, -- Controls if 'Generated-by: <provider/model>' line is added to git commit message
+        auto_add_current_file = true, -- Whether to automatically add the current file when opening a new chat
+        --- popup is the original yes,all,no in a floating window
+        --- inline_buttons is the new inline buttons in the sidebar
+        ---@type "popup" | "inline_buttons"
+        confirmation_ui_style = "inline_buttons",
+        --- Whether to automatically open files and navigate to lines when ACP agent makes edits
+        ---@type boolean
+        acp_follow_agent_locations = true,
       },
       web_search_engine = {
         -- disable_tools = true,
@@ -97,9 +113,9 @@ return {
           __inherited_from = "openai",
           api_key_name = "DEEPSEEK_API_KEY",
           endpoint = "https://api.deepseek.com",
-          model = "deepseek-reasoner",
+          model = "deepseek-chat",
           extra_request_body = {
-            temperature = 0,
+            temperature = 0.7,
             max_completion_tokens = 8192,
           },
         },
