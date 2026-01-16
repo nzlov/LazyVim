@@ -65,12 +65,12 @@ return {
     version = false, -- Set this to "*" to always pull the latest release version, or set it to false to update to the latest code changes.
     opts = {
       debug = false,
-      mode = "legacy",
+      mode = "agentic", -- "legacy",
       provider = "deepseek",
       auto_suggestions_provider = "qwen3code",
       cursor_applying_provider = "qwen3code",
       rules = {
-        project_dir = nil,
+        project_dir = ".avante",
         global_dir = "$HOME/.config/nvim/rules/",
       },
       behaviour = {
@@ -119,6 +119,12 @@ return {
             temperature = 0.7,
             max_completion_tokens = 8192,
           },
+        },
+        minimax = {
+          __inherited_from = "openai",
+          api_key_name = "MINIMAX_API_KEY",
+          endpoint = "https://api.minimaxi.com/v1",
+          model = "MiniMax-M2",
         },
         siliconflow = {
           __inherited_from = "openai",
@@ -237,6 +243,7 @@ return {
         opts = {
           -- recommended settings
           default = {
+            verbose = false,
             embed_image_as_base64 = false,
             prompt_for_file_name = false,
             drag_and_drop = {
