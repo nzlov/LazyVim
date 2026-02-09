@@ -104,6 +104,9 @@ return {
             toggle_connection = { "<C-t>", mode = { "i", "n" } }, -- Toggle MCP server connection in the MCP picker
           },
         },
+        ui = {
+          window_width = 0.50, -- Width as percentage of editor width
+        },
       })
     end,
     dependencies = {
