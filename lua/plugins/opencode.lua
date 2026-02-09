@@ -55,13 +55,77 @@ return {
               desc = "Open quick chat input with selection context in visual mode or current line context in normal mode",
             },
           },
+          input_window = {
+            ["<S-cr>"] = { "submit_input_prompt", mode = { "n", "i" } }, -- Submit prompt (normal mode and insert mode)
+            ["<esc>"] = false,
+            ["<C-c>"] = { "cancel" }, -- Cancel opencode request while it is running
+            ["~"] = { "mention_file", mode = "i" }, -- Pick a file and add to context. See File Mentions section
+            ["@"] = { "mention", mode = "i" }, -- Insert mention (file/agent)
+            ["/"] = { "slash_commands", mode = "i" }, -- Pick a command to run in the input window
+            ["#"] = { "context_items", mode = "i" }, -- Manage context items (current file, selection, diagnostics, mentioned files)
+            ["<M-v>"] = { "paste_image", mode = "i" }, -- Paste image from clipboard as attachment
+            ["<C-i>"] = { "focus_input", mode = { "n", "i" } }, -- Focus on input window and enter insert mode at the end of the input from the output window
+            ["<tab>"] = { "toggle_pane", mode = { "n", "i" } }, -- Toggle between input and output panes
+            ["<up>"] = { "prev_prompt_history", mode = { "n", "i" } }, -- Navigate to previous prompt in history
+            ["<down>"] = { "next_prompt_history", mode = { "n", "i" } }, -- Navigate to next prompt in history
+            ["<M-m>"] = { "switch_mode" }, -- Switch between modes (build/plan)
+            ["<M-r>"] = { "cycle_variant", mode = { "n", "i" } }, -- Cycle through available model variants
+          },
+          output_window = {
+            ["<esc>"] = false,
+            ["<C-c>"] = { "cancel" }, -- Cancel opencode request while it is running
+            ["]]"] = { "next_message" }, -- Navigate to next message in the conversation
+            ["[["] = { "prev_message" }, -- Navigate to previous message in the conversation
+            ["<tab>"] = { "toggle_pane", mode = { "n", "i" } }, -- Toggle between input and output panes
+            ["i"] = { "focus_input", "n" }, -- Focus on input window and enter insert mode at the end of the input from the output window
+            ["<M-r>"] = { "cycle_variant", mode = { "n" } }, -- Cycle through available model variants
+            ["<leader>oS"] = { "select_child_session" }, -- Select and load a child session
+            ["<leader>oD"] = { "debug_message" }, -- Open raw message in new buffer for debugging
+            ["<leader>oO"] = { "debug_output" }, -- Open raw output in new buffer for debugging
+            ["<leader>ods"] = { "debug_session" }, -- Open raw session in new buffer for debugging
+          },
+          session_picker = {
+            rename_session = { "<C-r>" }, -- Rename selected session in the session picker
+            delete_session = { "<C-d>" }, -- Delete selected session in the session picker
+            new_session = { "<C-s>" }, -- Create and switch to a new session in the session picker
+          },
+          timeline_picker = {
+            undo = { "<C-u>", mode = { "i", "n" } }, -- Undo to selected message in timeline picker
+            fork = { "<C-f>", mode = { "i", "n" } }, -- Fork from selected message in timeline picker
+          },
+          history_picker = {
+            delete_entry = { "<C-d>", mode = { "i", "n" } }, -- Delete selected entry in the history picker
+            clear_all = { "<C-X>", mode = { "i", "n" } }, -- Clear all entries in the history picker
+          },
+          model_picker = {
+            toggle_favorite = { "<C-f>", mode = { "i", "n" } },
+          },
+          mcp_picker = {
+            toggle_connection = { "<C-t>", mode = { "i", "n" } }, -- Toggle MCP server connection in the MCP picker
+          },
         },
       })
     end,
     dependencies = {
       "saghen/blink.cmp",
       -- 'hrsh7th/nvim-cmp',
-
+      {
+        "MeanderingProgrammer/render-markdown.nvim",
+        opts = {
+          anti_conceal = { enabled = false },
+          file_types = {
+            "markdown",
+            "Avante",
+            "copilot-chat",
+            "opencode_output",
+            "norg",
+            "rmd",
+            "org",
+            "codecompanion",
+          },
+        },
+        ft = { "markdown", "Avante", "copilot-chat", "opencode_output", "norg", "rmd", "org", "codecompanion" },
+      },
       -- Optional, for file mentions picker, pick only one
       {
         "folke/snacks.nvim",
