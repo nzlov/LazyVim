@@ -93,4 +93,14 @@ return {
   --     vim.g.tabby_inline_completion_trigger = "auto"
   --   end,
   -- },
+  {
+    "folke/snacks.nvim",
+    opts = {
+      terminal = {
+        win = {
+          position = "float",
+        },
+      },
+    },
+  },
 }
