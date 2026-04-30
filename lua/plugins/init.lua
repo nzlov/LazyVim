@@ -10,12 +10,25 @@ end
 
 return {
   { "ellisonleao/gruvbox.nvim" },
+  { "kepano/flexoki-neovim", name = "flexoki" },
+  {
+    "scottmckendry/cyberdream.nvim",
+    config = function(_, opts)
+      require("cyberdream").setup({
+        -- Set light or dark variant
+        variant = "auto", -- use "light" for the light variant. Also accepts "auto" to set dark or light colors based on the current value of `vim.o.background`
+
+        -- Enable transparent background
+        transparent = true,
+      })
+    end,
+  },
 
   -- Configure LazyVim to load gruvbox
   {
     "LazyVim/LazyVim",
     opts = {
-      colorscheme = "gruvbox",
+      colorscheme = "cyberdream",
     },
   },
   {
